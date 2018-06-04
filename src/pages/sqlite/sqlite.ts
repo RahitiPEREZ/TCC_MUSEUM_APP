@@ -51,6 +51,8 @@ export class SqlitePage {
     }, 4000);
   }
 
+
+  // fonction création bdd
   public createDatabaseFile(): void {
     console.log("createDatabaseFile function");
     this.sqlite.create({
@@ -65,6 +67,7 @@ export class SqlitePage {
       .catch(err => console.log("createDatabaseFile", err));
   }
 
+  // fonction création table "oeuvres"
   private createTables(): void {
       this.db.executeSql('CREATE TABLE if not exists `OEUVRES` ( `id` INTEGER PRIMARY KEY, `lastname` TEXT NOT NULL, `firstname` TEXT NOT NULL, `photo` TEXT NOT NULL, `code` INTEGER NOT NULL,  `checkmark` INTEGER)', {})
       .then(() => {
@@ -79,21 +82,24 @@ export class SqlitePage {
       
   }
   
-  private dropTables(): void {
+// Code teremu :
+//   private dropTables(): void {
 
-    this.db.executeSql('DROP TABLE `OEUVRES`', {})
+//     this.db.executeSql('DROP TABLE `OEUVRES`', {})
 
-    .then(() => {
+//     .then(() => {
 
-      console.log('Table Oeuvres dropped !');
+//       console.log('Table Oeuvres dropped !');
 
-    })
+//     })
 
-    .catch(e => console.log('nulll',e));
+//     .catch(e => console.log('nulll',e));
 
-}
+// }
+
+
+
 //--============================== CREATE OEUVRES ==============================--//
-
     private createOeuvres(): void {
 
       this.db.executeSql("INSERT INTO `OEUVRES` VALUES (1,'ALVAREZ','Jean-Pierre','9213750369',9213750369,0)," +
@@ -138,16 +144,11 @@ export class SqlitePage {
     
       "(21,'TOOFA','Teparii ','4235066246',4235066246,0);", {})
     
-      .then(() => {
-        
-        console.log('event works created');
-        
-        
-      })
-    
-        .catch(e => console.log(e, 'No Event'));
-      
-    }
+      .then(() => {       
+        console.log('event works created');   
+       })
+        .catch(e => console.log(e, 'No Event')); 
+       }
 
 
 //--============================== LOAD OEUVRES ==============================--//

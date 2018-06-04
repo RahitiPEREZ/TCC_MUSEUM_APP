@@ -1,37 +1,29 @@
-<!--
-* =======================================================================================================================
-* =======================================================================================================================
-* =================================================== LIST PAGE HTML =========================================================
-* =======================================================================================================================
-* =======================================================================================================================
- -->
-
- <div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
-  <div class="flb">
-    <div class="Aligner-item Aligner-item--top"></div>
-    <!-- <img src= "/src/assets/logo.svg"> -->
-     <h1> Welcome </h1>
-    <div class="Aligner-item Aligner-item--bottom"></div>
-  </div>
+<!--========================= SplashScreen =========================-->
+<div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
+ <div class="flb">
+  <div class="Aligner-item Aligner-item--top"></div>
+   <h1> Welcome </h1>
+  <div class="Aligner-item Aligner-item--bottom"></div>
+ </div>
 </div>
+
+<!--================================== Body ================================-->
 
 <ion-header>
     <ion-row>
       <ion-col width-50 style="text-align: center">
-      
         <h1 class="nom"> List </h1>
-  
       </ion-col>
       <ion-col>
 
-        <h5> Oeuvres vues : </h5>
+        <h5> Oeuvres vues : /21 </h5>
 
       </ion-col>
     </ion-row>
 </ion-header>
 
-<ion-content padding>
 
+<ion-content padding>
 
   <ion-card>
     <ion-item *ngFor="let oeuvre of oeuvres">
@@ -43,11 +35,8 @@
         <b>Nom : </b>{{oeuvre.lastname}}<br/>
         <b>Prenom : </b>{{oeuvre.firstname}}<br/>
         <b>Code : </b>{{oeuvre.code}}
-        <!-- <ion-icon name="checkmark-circle-outline"></ion-icon> -->
       </ion-card-content>
   </ion-item>
   </ion-card>
  
-
-
 </ion-content>
