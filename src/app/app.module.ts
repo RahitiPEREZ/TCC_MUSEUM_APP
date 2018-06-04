@@ -3,14 +3,28 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { InAppBrowser } from '@ionic-native/in-app-browser'
+
+import { SqlitePage } from '../pages/sqlite/sqlite';
+import { AboutPage } from '../pages/about/about';
+import { ContactPage } from '../pages/contact/contact';
+import { TabsPage } from '../pages/tabs/tabs';
+
+import { ScannerPage } from '../pages/scanner/scanner';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+
+import { SQLite } from '@ionic-native/sqlite';
+
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    AboutPage,
+    ContactPage,
+    TabsPage,
+    ScannerPage,
+    SqlitePage
   ],
   imports: [
     BrowserModule,
@@ -19,12 +33,19 @@ import { HomePage } from '../pages/home/home';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    AboutPage,
+    ContactPage,
+    TabsPage,
+    ScannerPage,
+    SqlitePage
   ],
   providers: [
+    SQLite,
+    BarcodeScanner,
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    InAppBrowser
   ]
 })
 export class AppModule {}
