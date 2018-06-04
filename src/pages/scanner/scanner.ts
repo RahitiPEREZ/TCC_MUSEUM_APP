@@ -26,7 +26,7 @@ export class ScannerPage {
     closebuttoncaption: 'Close',
 
   }
-  private fixedURL: string = 'http://tcc.1click.pf/museum/index.php?mat=T910QKN5S4&oeuvre=';
+  private fixedURL: string = 'http://tcc.1click.pf/museum/index.php?mat=TONCODE&oeuvre=';
 
   private scannedData: any; constructor(public dbService:SqlitePageModule, public navCtrl: NavController, public navParams: NavParams, public barcodeScanner: BarcodeScanner, public appCtrl: App, private inAppBrowser: InAppBrowser) {
 
