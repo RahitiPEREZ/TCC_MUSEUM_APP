@@ -40,7 +40,7 @@ export class SqlitePage {
       .then((db: SQLiteObject) => {
         console.log('Bdd créée !');
         this.db = db;
-        this.createTables();
+        this.dropTables();
       })
       .catch(err => console.log("createDatabaseFile", err));
   }
@@ -58,7 +58,19 @@ export class SqlitePage {
       
   }
   
+  private dropTables(): void {
 
+    this.db.executeSql('DROP TABLE `OEUVRES`', {})
+
+    .then(() => {
+
+      console.log('Table Oeuvres dropped !');
+
+    })
+
+    .catch(e => console.log('nulll',e));
+
+}
 //--============================== CREATE OEUVRES ==============================--//
 
     private createOeuvres(): void {
