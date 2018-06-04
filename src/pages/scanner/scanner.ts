@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
-
+import { SqlitePageModule } from '../sqlite/sqlite.module';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 // 
 // * =======================================================================================================================
 // * =======================================================================================================================
@@ -27,7 +28,7 @@ export class ScannerPage {
   }
   private fixedURL: string = 'http://tcc.1click.pf/museum/index.php?mat=T910QKN5S4&oeuvre=';
 
-  private scannedData: any; constructor(public navCtrl: NavController, public navParams: NavParams, public barcodeScanner: BarcodeScanner, public appCtrl: App, private inAppBrowser: InAppBrowser) {
+  private scannedData: any; constructor(public dbService:SqlitePageModule, public navCtrl: NavController, public navParams: NavParams, public barcodeScanner: BarcodeScanner, public appCtrl: App, private inAppBrowser: InAppBrowser) {
 
   } ionViewWillEnter() {
 
@@ -61,6 +62,16 @@ export class ScannerPage {
         console.log('Error', err);
       });
   }
+
+  private statutUpdate(): any {
+
+    this.dbService.db.executeSql("UPDATE `oeuvres` SET statut = 'checkmark-circle-outline' WHERE qr_code=" + this.scannedData + ";", {})
+      .then(() => {
+        console.log('"Statut" updated');
+        this.oeuvresPage();
+        
+      })
+}
 
   private oeuvresPage(): void {
 

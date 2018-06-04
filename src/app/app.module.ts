@@ -13,6 +13,7 @@ import { ScannerPage } from '../pages/scanner/scanner';
 // ======================PLUGINS==========================
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { SQLite } from '@ionic-native/sqlite';
+
 import { InAppBrowser } from '@ionic-native/in-app-browser'
 
 // ====================MODULES PAGES========================
@@ -46,7 +47,8 @@ import { SqlitePageModule } from '../pages/sqlite/sqlite.module';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    InAppBrowser
+    InAppBrowser,
+    SqlitePageModule
   ]
 })
 export class AppModule {}

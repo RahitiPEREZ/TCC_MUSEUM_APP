@@ -22,9 +22,9 @@ const DATABASE_FILE_NAME: string = 'data.db';
 export class SqlitePage {
   splash = true;
   tabBarElement: any;
-  
+
   private db: SQLiteObject;
-  
+
   oeuvres = [];
   firstname: string;
   lastname: string;
@@ -32,15 +32,20 @@ export class SqlitePage {
   photo: string;
   checkmark: string;
 
+
+  public oeuvresVu: any;
+  public totalOeuvres: any;
+
   constructor(public platform: Platform, public navCtrl: NavController, private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar');
 
-      console.log("SQLite Page launched");
-      
-      platform.ready()
-     .then(() => {
+    console.log("SQLite Page launched");
+
+    platform.ready()
+      .then(() => {
         this.createDatabaseFile();
-       });
+       
+      });
   }
 
   ionViewDidLoad() {
@@ -63,13 +68,14 @@ export class SqlitePage {
         console.log('Bdd créée !');
         this.db = db;
         this.createTables();
+        this.getTotalOeuvres();
       })
       .catch(err => console.log("createDatabaseFile", err));
   }
 
   // fonction création table "oeuvres"
   private createTables(): void {
-      this.db.executeSql('CREATE TABLE if not exists `OEUVRES` ( `id` INTEGER PRIMARY KEY, `lastname` TEXT NOT NULL, `firstname` TEXT NOT NULL, `photo` TEXT NOT NULL, `code` INTEGER NOT NULL,  `checkmark` INTEGER)', {})
+    this.db.executeSql('CREATE TABLE if not exists `OEUVRES` ( `id` INTEGER PRIMARY KEY, `lastname` TEXT NOT NULL, `firstname` TEXT NOT NULL, `photo` TEXT NOT NULL, `code` INTEGER NOT NULL,  `checkmark` INTEGER)', {})
       .then(() => {
         this.createOeuvres();
         this.retrieveOeuvres();
@@ -78,99 +84,118 @@ export class SqlitePage {
 
 
       })
-      .catch(e => console.log('nulll',e));
-      
+      .catch(e => console.log('nulll', e));
+
   }
-  
-// Code teremu :
-//   private dropTables(): void {
 
-//     this.db.executeSql('DROP TABLE `OEUVRES`', {})
+  // Code teremu :
+  //   private dropTables(): void {
 
-//     .then(() => {
+  //     this.db.executeSql('DROP TABLE `OEUVRES`', {})
 
-//       console.log('Table Oeuvres dropped !');
+  //     .then(() => {
 
-//     })
+  //       console.log('Table Oeuvres dropped !');
 
-//     .catch(e => console.log('nulll',e));
+  //     })
 
-// }
+  //     .catch(e => console.log('nulll',e));
+
+  // }
 
 
 
-//--============================== CREATE OEUVRES ==============================--//
-    private createOeuvres(): void {
+  //--============================== CREATE OEUVRES ==============================--//
+  private createOeuvres(): void {
 
-      this.db.executeSql("INSERT INTO `OEUVRES` VALUES (1,'ALVAREZ','Jean-Pierre','9213750369',9213750369,0)," +
-    
+    this.db.executeSql("INSERT INTO `OEUVRES` VALUES (1,'ALVAREZ','Jean-Pierre','9213750369',9213750369,0)," +
+
       "(2,'ARAI','Poeragni','6510403686',6510403686,0)," +
-    
+
       "(3,'CHANSIN','Jerôme','7216899933',7216899933,0)," +
-    
+
       "(4,'CHEUNG-SEN ','Jonas','1629568455',1629568455,0)," +
-    
+
       "(5,'CUNNY','Heimana','9266553664',9266553664,0)," +
-    
+
       "(6,'EBB','Nicolas','1168085824',1168085824,0)," +
-    
+
       "(7,'LEHARTEL','Alexandre','2791010818',2791010818,0)," +
-    
+
       "(8,'LENOIR','Tetuaoro','4173047359',4173047359,0)," +
-    
+
       "(9,'LONGINE','Manaarii ','9782420312',9782420312,0)," +
-    
+
       "(10,'LY','Joane ','6872232276',6872232276,0)," +
-    
+
       "(11,'MARO','Teremu ','1234567890',1234567890,0)," +
-    
+
       "(12,'MONACO','Vaitare','4653519064',4653519064,0)," +
-    
+
       "(13,'PAEAHI','Ariipaea','3658034121',3658034121,0)," +
-    
+
       "(14,'PAMBRUN','Aito ','5175547403',5175547403,0)," +
-    
+
       "(15,'PAMBRUN','Hiomai','9520532017',9520532017,0)," +
-    
+
       "(16,'PEREZ','Rahiti','1228597258',1228597258,0)," +
-    
+
       "(17,'PERRY','Matihamu ','5480211371',5480211371,0)," +
-    
+
       "(18,'ROUSSEL','Christian ','2462643924',2462643924,0)," +
-    
+
       "(19,'TEHUPE','Tinirau ','5055364030',5055364030,0)," +
-    
+
       "(20,'TEMATAHOTOA','Tinirau ','6232447902',6232447902,0)," +
-    
+
       "(21,'TOOFA','Teparii ','4235066246',4235066246,0);", {})
-    
-      .then(() => {       
-        console.log('event works created');   
-       })
-        .catch(e => console.log(e, 'No Event')); 
-       }
+
+      .then(() => {
+        console.log('event works created');
+      })
+      .catch(e => console.log(e, 'No Event'));
+  }
 
 
-//--============================== LOAD OEUVRES ==============================--//
+  //--============================== LOAD OEUVRES ==============================--//
   public retrieveOeuvres() {
 
     this.db.executeSql('SELECT lastname, firstname, code, photo, checkmark FROM `oeuvres`', {})
-		.then((data) => {
+      .then((data) => {
 
-			if(data == null) {
-        console.log("Base de données vide !");
-				return;
-			}
+        if (data == null) {
+          console.log("Base de données vide !");
+          return;
+        }
 
 
-				if(data.rows.length > 0) {
-					for(var i = 0; i < data.rows.length; i++) {
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
             this.oeuvres.push(data.rows.item(i));
             console.log(data.rows.item(i).lastname);
           }
-				}
-		});
-    
-	}
+        }
+      });
+
+  }
+
+
+  //Compte les oeuvres vues
+  public getOeuvresVu(): void {
+    this.db.executeSql('SELECT COUNT(checkmark) AS counted FROM `oeuvres` WHERE oeuvres.statut="1"', {})
+      .then((data) => {
+        console.log('Oeuvres vu: ' + data.rows.item(0).counted);
+        this.oeuvresVu = data.rows.item(0).counted;
+      })
+  }
+
+  //Compte le nombre total d'oeuvres
+  public getTotalOeuvres(): void {
+    this.db.executeSql('SELECT COUNT(id) AS total FROM `oeuvres`', {})
+      .then((data) => {
+        console.log('Total: ' + data.rows.item(0).total);
+        this.totalOeuvres = data.rows.item(0).total;
+      })
+  }
 
 }
