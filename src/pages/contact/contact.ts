@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { InAppBrowser, InAppBrowserOptions, InAppBrowserObject } from '@ionic-native/in-app-browser';
 
 
 /**
- * Generated class for the ContactPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * =======================================================================================================================
+ * =======================================================================================================================
+ * =================================================== INFORMATIONS PAGE =================================================
+ * =======================================================================================================================
+ * =======================================================================================================================
  */
 
 @IonicPage()
@@ -17,11 +18,23 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 })
 export class ContactPage {
 
+  url : string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private inAppBrowser: InAppBrowser) {
   }
 
+  openWebpage(url: string) {
+    const options : InAppBrowserOptions = {
+
+    }
+    // OPEN URL AND RETURN INAPPBROWSEROBJECT
+    const browser = this.inAppBrowser.create(url, '_self', options );
+
+
+  }
+
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ContactPage');
+    console.log('ionViewDidLoad ContactPage--> InformationsPage');
   }
 
 }

@@ -1,11 +1,20 @@
 import { Component } from '@angular/core';
-
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { SqlitePage } from '../sqlite/sqlite';
-import { AboutPage } from '../about/about';
+
 import { ContactPage } from '../contact/contact';
 import { ScannerPage } from '../scanner/scanner';
 
+// 
+// * =======================================================================================================================
+// * =======================================================================================================================
+// * =================================================== TABS PAGE TS=========================================================
+// * =======================================================================================================================
+// * =======================================================================================================================
+// 
 
+@IonicPage( { name: 'TabsPage' } )
 @Component({
   selector: 'page-tabs',
   templateUrl: 'tabs.html',
@@ -13,7 +22,6 @@ import { ScannerPage } from '../scanner/scanner';
 export class TabsPage {
 
   sqlitePage = SqlitePage;
-  aboutPage = AboutPage;
   contactPage = ContactPage;
   scannerPage = ScannerPage;
 }

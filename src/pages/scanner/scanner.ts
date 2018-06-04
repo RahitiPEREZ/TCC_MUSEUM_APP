@@ -1,7 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 
+// 
+// * =======================================================================================================================
+// * =======================================================================================================================
+// * =================================================== SCANNER PAGE TS=================================================
+// * =======================================================================================================================
+// * =======================================================================================================================
+//  
 
 @IonicPage()
 @Component({
@@ -10,30 +18,67 @@ import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-sca
 })
 export class ScannerPage {
 
-  data={ };
-  option: BarcodeScannerOptions;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public barcodeScanner:BarcodeScanner) {
+  results: {}; optionsScanner: BarcodeScannerOptions
+
+  optionsBrowser: InAppBrowserOptions = {
+
+    closebuttoncaption: 'Close',
+
   }
-  ionViewWillEnter(){
+  private fixedURL: string = 'http://tcc.1click.pf/museum/index.php?mat=T910QKN5S4&oeuvre=';
+
+  private scannedData: any; constructor(public navCtrl: NavController, public navParams: NavParams, public barcodeScanner: BarcodeScanner, public appCtrl: App, private inAppBrowser: InAppBrowser) {
+
+  } ionViewWillEnter() {
+
     this.scan();
   }
-  scan(){
 
-    this.option = {
-     
+  scan() {
+
+    this.optionsScanner = {
+
       prompt: "Please scan your code"
-    }
-    this.barcodeScanner.scan(this.option).then(barcodeData => {
-      if (barcodeData.cancelled) {
-        this.navCtrl.parent.select(0);
-      }
-      console.log('Barcode data', barcodeData);
 
-     }).catch(err => {
-         console.log('Error', err);
-     });
+    };
+    this.barcodeScanner.scan(this.optionsScanner)
+      .then(barcodeData => {
+
+        if (barcodeData.cancelled == true) {
+
+          this.navCtrl.parent.select(0);
+
+        } else {
+          this.scannedData = barcodeData.text;
+          this.oeuvresPage();
+          console.log('Scanned code: ', this.scannedData);
+
+        }
+      })
+
+
+      .catch(err => {
+        console.log('Error', err);
+      });
   }
 
+  private oeuvresPage(): void {
+
+    let target = "_blank";
+
+    let URL = this.fixedURL + this.scannedData
+
+    this.inAppBrowser.create(URL, target, this.optionsBrowser);
+
+    console.log('URL: ' + this.fixedURL + this.scannedData);
+
+     if (this.optionsBrowser.closebuttoncaption) this.refreshMe();
+
+  }
+   public refreshMe() {
+
+     this.appCtrl.getRootNavs()[0].push('SqlitePage');
+     this.appCtrl.getRootNavs()[0].push('TabsPage');
+ 
+  }
 }
-
-

@@ -1,3 +1,19 @@
+<!--
+* =======================================================================================================================
+* =======================================================================================================================
+* =================================================== LIST PAGE HTML =========================================================
+* =======================================================================================================================
+* =======================================================================================================================
+ -->
+
+ <div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
+  <div class="flb">
+    <div class="Aligner-item Aligner-item--top"></div>
+    <!-- <img src= "/src/assets/logo.svg"> -->
+     <h1> Welcome </h1>
+    <div class="Aligner-item Aligner-item--bottom"></div>
+  </div>
+</div>
 
 <ion-header>
     <ion-row>
@@ -22,11 +38,12 @@
         <ion-avatar item-start>
       <img src="../../assets/imgs/photos/{{oeuvre.code}}.jpg" />
         </ion-avatar>
+        <ion-icon name="checkmark-circle-outline" item-end style="text-align: end"></ion-icon>
       <ion-card-content>
         <b>Nom : </b>{{oeuvre.lastname}}<br/>
         <b>Prenom : </b>{{oeuvre.firstname}}<br/>
         <b>Code : </b>{{oeuvre.code}}
-        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <!-- <ion-icon name="checkmark-circle-outline"></ion-icon> -->
       </ion-card-content>
   </ion-item>
   </ion-card>

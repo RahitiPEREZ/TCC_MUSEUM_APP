@@ -2,6 +2,13 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 
+// 
+// * =======================================================================================================================
+// * =======================================================================================================================
+// * =================================================== LIST PAGE TS =========================================================
+// * =======================================================================================================================
+// * =======================================================================================================================
+// 
 
 
 const DATABASE_FILE_NAME: string = 'data.db';
@@ -13,8 +20,9 @@ const DATABASE_FILE_NAME: string = 'data.db';
   templateUrl: 'sqlite.html'
 })
 export class SqlitePage {
-
-
+  splash = true;
+  tabBarElement: any;
+  
   private db: SQLiteObject;
   
   oeuvres = [];
@@ -25,13 +33,25 @@ export class SqlitePage {
   checkmark: string;
 
   constructor(public platform: Platform, public navCtrl: NavController, private sqlite: SQLite) {
+    this.tabBarElement = document.querySelector('.tabbar');
 
       console.log("SQLite Page launched");
-      this.createDatabaseFile();
-
+      
+      platform.ready()
+     .then(() => {
+        this.createDatabaseFile();
+       });
   }
 
-  private createDatabaseFile(): void {
+  ionViewDidLoad() {
+    this.tabBarElement.style.display = 'none';
+    setTimeout(() => {
+      this.splash = false;
+      this.tabBarElement.style.display = 'flex';
+    }, 4000);
+  }
+
+  public createDatabaseFile(): void {
     console.log("createDatabaseFile function");
     this.sqlite.create({
       name: DATABASE_FILE_NAME,
@@ -40,7 +60,7 @@ export class SqlitePage {
       .then((db: SQLiteObject) => {
         console.log('Bdd créée !');
         this.db = db;
-        this.dropTables();
+        this.createTables();
       })
       .catch(err => console.log("createDatabaseFile", err));
   }
@@ -49,6 +69,7 @@ export class SqlitePage {
       this.db.executeSql('CREATE TABLE if not exists `OEUVRES` ( `id` INTEGER PRIMARY KEY, `lastname` TEXT NOT NULL, `firstname` TEXT NOT NULL, `photo` TEXT NOT NULL, `code` INTEGER NOT NULL,  `checkmark` INTEGER)', {})
       .then(() => {
         this.createOeuvres();
+        this.retrieveOeuvres();
         console.log('Table Oeuvres created !');
 
 
@@ -120,7 +141,7 @@ export class SqlitePage {
       .then(() => {
         
         console.log('event works created');
-        this.retrieveOeuvres();
+        
         
       })
     
@@ -132,7 +153,7 @@ export class SqlitePage {
 //--============================== LOAD OEUVRES ==============================--//
   public retrieveOeuvres() {
 
-    this.db.executeSql('SELECT firstname, lastname, code, photo, checkmark FROM `oeuvres`', {})
+    this.db.executeSql('SELECT lastname, firstname, code, photo, checkmark FROM `oeuvres`', {})
 		.then((data) => {
 
 			if(data == null) {
