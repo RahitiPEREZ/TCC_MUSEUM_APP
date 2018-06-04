@@ -55,7 +55,7 @@ export class SqlitePage {
 
       })
       .catch(e => console.log('nulll',e));
-      this.retrieveOeuvres();
+      
   }
   
 
@@ -108,12 +108,12 @@ export class SqlitePage {
       .then(() => {
         
         console.log('event works created');
+        this.retrieveOeuvres();
         
-
       })
     
         .catch(e => console.log(e, 'No Event'));
-    
+      
     }
 
 
