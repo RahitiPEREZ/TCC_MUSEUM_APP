@@ -103,7 +103,7 @@ export class SqlitePage {
     
       "(20,'TEMATAHOTOA','Tinirau ','6232447902',6232447902,0)," +
     
-      "(21,'TOOFA','Teparii ','4235066246',4235066246,0);'", {})
+      "(21,'TOOFA','Teparii ','4235066246',4235066246,0);", {})
     
       .then(() => {
         
