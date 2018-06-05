@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule, NavController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
@@ -19,6 +19,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser'
 // ====================MODULES PAGES========================
 import { TabsPageModule } from '../pages/tabs/tabs.module';
 import { SqlitePageModule } from '../pages/sqlite/sqlite.module';
+import { SqlitePage } from '../pages/sqlite/sqlite';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { SqlitePageModule } from '../pages/sqlite/sqlite.module';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     InAppBrowser,
-    SqlitePageModule
+    SqlitePage, 
   ]
 })
 export class AppModule {}

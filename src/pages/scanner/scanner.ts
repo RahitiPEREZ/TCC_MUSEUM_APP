@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { IonicPage, NavParams, App } from 'ionic-angular';
 import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 import { SqlitePageModule } from '../sqlite/sqlite.module';
+import { SqlitePage } from '../sqlite/sqlite';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 // 
 // * =======================================================================================================================
@@ -26,12 +27,17 @@ export class ScannerPage {
     closebuttoncaption: 'Close',
 
   }
-  private fixedURL: string = 'http://tcc.1click.pf/museum/index.php?mat=TONCODE&oeuvre=';
+  private fixedURL: string = 'http://tcc.1click.pf/museum/index.php?mat=T910QKN5S4&oeuvre=';
 
-  private scannedData: any; constructor(public dbService:SqlitePageModule, public navCtrl: NavController, public navParams: NavParams, public barcodeScanner: BarcodeScanner, public appCtrl: App, private inAppBrowser: InAppBrowser) {
+  public scannedData: any;
+  
 
-  } ionViewWillEnter() {
 
+  constructor(public sqliteService: SqlitePage,  public navParams: NavParams, public barcodeScanner: BarcodeScanner, public appCtrl: App, private inAppBrowser: InAppBrowser) {
+
+  } 
+  
+  ionViewWillEnter() {
     this.scan();
   }
 
@@ -47,13 +53,15 @@ export class ScannerPage {
 
         if (barcodeData.cancelled == true) {
 
-          this.navCtrl.parent.select(0);
+          this.appCtrl.getRootNavs()[0].push('SqlitePage');
+          this.appCtrl.getRootNavs()[0].push('TabsPage');
 
         } else {
           this.scannedData = barcodeData.text;
-          this.oeuvresPage();
+        
           console.log('Scanned code: ', this.scannedData);
-
+         
+          this.oeuvresPage();
         }
       })
 
@@ -63,15 +71,7 @@ export class ScannerPage {
       });
   }
 
-  private statutUpdate(): any {
-
-    this.dbService.db.executeSql("UPDATE `oeuvres` SET statut = 'checkmark-circle-outline' WHERE qr_code=" + this.scannedData + ";", {})
-      .then(() => {
-        console.log('"Statut" updated');
-        this.oeuvresPage();
-        
-      })
-}
+ 
 
   private oeuvresPage(): void {
 
@@ -82,14 +82,26 @@ export class ScannerPage {
     this.inAppBrowser.create(URL, target, this.optionsBrowser);
 
     console.log('URL: ' + this.fixedURL + this.scannedData);
-
-     if (this.optionsBrowser.closebuttoncaption) this.refreshMe();
+    this.statutUpdate(); 
+    this.refreshMe();
 
   }
-   public refreshMe() {
 
-     this.appCtrl.getRootNavs()[0].push('SqlitePage');
-     this.appCtrl.getRootNavs()[0].push('TabsPage');
- 
+  public statutUpdate(): any {
+    console.log('"Statut" avant');
+    this.sqliteService.db.executeSql("UPDATE 'OEUVRES' SET checkmark='md-checkmark-circle-outline' WHERE code="+this.scannedData, {})
+      .then(() => {
+        console.log('"Statut" updated');
+      })
+      .catch(err => {
+        console.log('Erreur requete', err);
+      })
+  } 
+
+  public refreshMe() {
+
+    this.appCtrl.getRootNavs()[0].push('SqlitePage');
+    this.appCtrl.getRootNavs()[0].push('TabsPage');
+
   }
 }

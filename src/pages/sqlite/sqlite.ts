@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavParams, Platform } from 'ionic-angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 
 // 
@@ -23,7 +23,7 @@ export class SqlitePage {
   splash = true;
   tabBarElement: any;
 
-  private db: SQLiteObject;
+  public db: SQLiteObject;
 
   oeuvres = [];
   firstname: string;
@@ -36,7 +36,7 @@ export class SqlitePage {
   public oeuvresVu: any;
   public totalOeuvres: any;
 
-  constructor(public platform: Platform, public navCtrl: NavController, private sqlite: SQLite) {
+  constructor(public platform: Platform, private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar');
 
     console.log("SQLite Page launched");
@@ -69,17 +69,21 @@ export class SqlitePage {
         this.db = db;
         this.createTables();
         this.getTotalOeuvres();
+       
+
       })
       .catch(err => console.log("createDatabaseFile", err));
   }
 
   // fonction création table "oeuvres"
-  private createTables(): void {
-    this.db.executeSql('CREATE TABLE if not exists `OEUVRES` ( `id` INTEGER PRIMARY KEY, `lastname` TEXT NOT NULL, `firstname` TEXT NOT NULL, `photo` TEXT NOT NULL, `code` INTEGER NOT NULL,  `checkmark` INTEGER)', {})
+  public createTables(): void {
+    this.db.executeSql('CREATE TABLE if not exists `OEUVRES` ( `id` INTEGER PRIMARY KEY, `lastname` TEXT NOT NULL, `firstname` TEXT NOT NULL, `photo` TEXT NOT NULL, `code` INTEGER NOT NULL,  `checkmark` TEXT )', {})
       .then(() => {
         this.createOeuvres();
+        this.getOeuvresVu();
         this.retrieveOeuvres();
         console.log('Table Oeuvres created !');
+      
 
 
 
@@ -88,67 +92,67 @@ export class SqlitePage {
 
   }
 
-  // Code teremu :
-  //   private dropTables(): void {
+  //Code teremu :
+    private dropTables(): void {
 
-  //     this.db.executeSql('DROP TABLE `OEUVRES`', {})
+      this.db.executeSql('DROP TABLE `OEUVRES`', {})
 
-  //     .then(() => {
+      .then(() => {
 
-  //       console.log('Table Oeuvres dropped !');
+        console.log('Table Oeuvres dropped !');
 
-  //     })
+      })
 
-  //     .catch(e => console.log('nulll',e));
+      .catch(e => console.log('nulll',e));
 
-  // }
+  }
 
 
 
   //--============================== CREATE OEUVRES ==============================--//
-  private createOeuvres(): void {
+  public createOeuvres(): void {
 
-    this.db.executeSql("INSERT INTO `OEUVRES` VALUES (1,'ALVAREZ','Jean-Pierre','9213750369',9213750369,0)," +
+    this.db.executeSql("INSERT INTO `OEUVRES` VALUES (1,'ALVAREZ','Jean-Pierre','9213750369',9213750369, 'md-radio-button-off')," +
 
-      "(2,'ARAI','Poeragni','6510403686',6510403686,0)," +
+      "(2,'ARAI','Poeragni','6510403686',6510403686, 'md-radio-button-off')," +
 
-      "(3,'CHANSIN','Jerôme','7216899933',7216899933,0)," +
+      "(3,'CHANSIN','Jerôme','7216899933',7216899933, 'md-radio-button-off')," +
 
-      "(4,'CHEUNG-SEN ','Jonas','1629568455',1629568455,0)," +
+      "(4,'CHEUNG-SEN ','Jonas','1629568455',1629568455, 'md-radio-button-off')," +
 
-      "(5,'CUNNY','Heimana','9266553664',9266553664,0)," +
+      "(5,'CUNNY','Heimana','9266553664',9266553664, 'md-radio-button-off')," +
 
-      "(6,'EBB','Nicolas','1168085824',1168085824,0)," +
+      "(6,'EBB','Nicolas','1168085824',1168085824, 'md-radio-button-off')," +
 
-      "(7,'LEHARTEL','Alexandre','2791010818',2791010818,0)," +
+      "(7,'LEHARTEL','Alexandre','2791010818',2791010818, 'md-radio-button-off')," +
 
-      "(8,'LENOIR','Tetuaoro','4173047359',4173047359,0)," +
+      "(8,'LENOIR','Tetuaoro','4173047359',4173047359, 'md-radio-button-off')," +
 
-      "(9,'LONGINE','Manaarii ','9782420312',9782420312,0)," +
+      "(9,'LONGINE','Manaarii ','9782420312',9782420312, 'md-radio-button-off')," +
 
-      "(10,'LY','Joane ','6872232276',6872232276,0)," +
+      "(10,'LY','Joane ','6872232276',6872232276, 'md-radio-button-off')," +
 
-      "(11,'MARO','Teremu ','1234567890',1234567890,0)," +
+      "(11,'MARO','Teremu ','1234567890',1234567890, 'md-radio-button-off')," +
 
-      "(12,'MONACO','Vaitare','4653519064',4653519064,0)," +
+      "(12,'MONACO','Vaitare','4653519064',4653519064, 'md-radio-button-off')," +
 
-      "(13,'PAEAHI','Ariipaea','3658034121',3658034121,0)," +
+      "(13,'PAEAHI','Ariipaea','3658034121',3658034121, 'md-radio-button-off')," +
 
-      "(14,'PAMBRUN','Aito ','5175547403',5175547403,0)," +
+      "(14,'PAMBRUN','Aito ','5175547403',5175547403, 'md-radio-button-off')," +
 
-      "(15,'PAMBRUN','Hiomai','9520532017',9520532017,0)," +
+      "(15,'PAMBRUN','Hiomai','9520532017',9520532017, 'md-radio-button-off')," +
 
-      "(16,'PEREZ','Rahiti','1228597258',1228597258,0)," +
+      "(16,'PEREZ','Rahiti','1228597258',1228597258, 'md-radio-button-off')," +
 
-      "(17,'PERRY','Matihamu ','5480211371',5480211371,0)," +
+      "(17,'PERRY','Matihamu ','5480211371',5480211371, 'md-radio-button-off')," +
 
-      "(18,'ROUSSEL','Christian ','2462643924',2462643924,0)," +
+      "(18,'ROUSSEL','Christian ','2462643924',2462643924, 'md-radio-button-off')," +
 
-      "(19,'TEHUPE','Tinirau ','5055364030',5055364030,0)," +
+      "(19,'TEHUPE','Tinirau ','5055364030',5055364030, 'md-radio-button-off')," +
 
-      "(20,'TEMATAHOTOA','Tinirau ','6232447902',6232447902,0)," +
+      "(20,'TEMATAHOTOA','Tinirau ','6232447902',6232447902, 'md-radio-button-off')," +
 
-      "(21,'TOOFA','Teparii ','4235066246',4235066246,0);", {})
+      "(21,'TOOFA','Teparii ','4235066246',4235066246, 'md-radio-button-off');", {})
 
       .then(() => {
         console.log('event works created');
@@ -182,7 +186,7 @@ export class SqlitePage {
 
   //Compte les oeuvres vues
   public getOeuvresVu(): void {
-    this.db.executeSql('SELECT COUNT(checkmark) AS counted FROM `oeuvres` WHERE oeuvres.statut="1"', {})
+    this.db.executeSql('SELECT COUNT(checkmark) AS counted FROM `oeuvres` WHERE oeuvres.checkmark="md-checkmark-circle-outline"', {})
       .then((data) => {
         console.log('Oeuvres vu: ' + data.rows.item(0).counted);
         this.oeuvresVu = data.rows.item(0).counted;
